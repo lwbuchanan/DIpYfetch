@@ -1,6 +1,7 @@
 import os
 import platform
 import sys
+import psutil
 import time
 
 COLOR_CODES = {"black": 20,
@@ -29,15 +30,19 @@ def clear():
 
 
 labels = ["Operating System:",
-         "Processor:",
-         "Video Card:",
-         "Total Ram:"
+          "Windows Version:",
+          "Processor:",
+          "CPU Architecture",
+          "Memory Usage:"
          ]
 
+
 output = [platform.system() + " " + platform.release() + " " + platform.win32_edition(),
+          platform.version(),
           platform.processor(),
-          os.popen(""),
-          "XX GiB"]
+          platform.machine(),
+          psutil.virtual_memory()
+          ]
 
 def main():
     clear()
@@ -53,4 +58,5 @@ if __name__ == "__main__":
     starttime = time.time()
     main()
     runtime = round(time.time() - starttime, 5)
-    print("Total time of execution:", runtime, "seconds")
+    clr_print("Total time of execution:", runtime, "seconds", color='red')
+    print()
