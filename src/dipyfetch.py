@@ -3,6 +3,7 @@ import platform
 import sys
 import psutil
 import time
+import cpuinfo
 
 COLOR_CODES = {"black": 20,
                "red": 31,
@@ -30,19 +31,18 @@ def clear():
 
 
 labels = ["Operating System:",
-          "Windows Version:",
+          "Windows Build:",
           "Processor:",
           "CPU Architecture",
           "Memory Usage:"
          ]
 
-
 output = [platform.system() + " " + platform.release() + " " + platform.win32_edition(),
           platform.version(),
-          platform.processor(),
+          cpuinfo.get_cpu_info()["brand_raw"],
           platform.machine(),
-          psutil.virtual_memory()
-          ]
+          str(round(psutil.virtual_memory().used / 2**30, 1)) + " / " + str(round(psutil.virtual_memory().total / 2**30, 1)) +" GB"
+         ]
 
 def main():
     clear()
